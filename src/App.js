@@ -1,15 +1,36 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
 import "./App.css";
 
+import NasaPhoto from "./Components/NasaPhoto";
+
+// const dummyData = {
+//   date: "2022-12-01",
+//   explanation: "On flight day 13 (November 28) of the Artemis 1 mission the Orion spacecraft reached its maximum distance from Earth. In fact, over 430,000 kilometers from Earth its distant retrograde orbit also put Orion nearly 70,000 kilometers from the Moon. In the same field of view in this video frame from flight day 13, planet and large natural satellite even appear about the same apparent size from the uncrewed spacecraft's perspective. Today (December 1) should see Orion depart its distant retrograde orbit. En route to planet Earth it will head toward a second powered fly by of the Moon. Splashdown on the home world is expected on December 11.",
+//   hdurl: "https://apod.nasa.gov/apod/image/2212/art001e000672-orig.jpg",
+//   title: "Artemis 1: Flight Day 13"
+// }
+
 function App() {
+  const [data, setData] = useState();
+
+  useEffect(() => {
+    axios.get("https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY")
+      .then(res => {
+        setData(res.data);
+      })
+      .catch(err => console.error(err))
+  }, [])
+
   return (
     <div className="App">
-      <p>
-        Read through the instructions in the README.md file to build your NASA
-        app! Have fun <span role="img" aria-label='go!'>🚀</span>!
-      </p>
+      { data && <NasaPhoto photo={data} /> }
     </div>
   );
 }
 
+
+
 export default App;
+
